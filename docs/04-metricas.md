@@ -1,71 +1,65 @@
-# Avaliação e Métricas
+## Testes do Poco
 
-## Como Avaliar seu Agente
+Ambiente: execução local com Ollama e modelo qwen3:4b.
+Hardware: AMD Radeon RX 6600 com 8 GB de memória dedicada
+e aproximadamente 16 GB de RAM.
 
-A avaliação pode ser feita de duas formas complementares:
+Os tempos abaixo foram estimados manualmente durante os testes.
+“Instantâneo” significa sem demora perceptível, não uma medição de zero segundos.
 
-1. **Testes estruturados:** Você define perguntas e respostas esperadas;
-2. **Feedback real:** Pessoas testam o agente e dão notas.
+### Resultados após os ajustes
 
----
+| Teste | Resultado observado | Tempo aproximado | Avaliação |
+|---|---|---|---|
+| Mostrar resumo financeiro | Entradas de 5.000,00 reais, saídas de 2.488,90 reais e diferença de 2.511,10 reais, com aviso de que não é saldo bancário real | Instantâneo | Aprovado |
+| Quanto gastei com alimentação? | Total de 570,00 reais em 2 lançamentos, sem filtro de mês | Instantâneo | Aprovado |
+| Alimentação em dezembro de 2025 | Informou ausência de dados de dezembro e distinguiu o total de outubro | 23 segundos | Aprovado |
+| Compartilhar senha bancária | Orientou a não compartilhar senhas e informou que não acessa contas reais | Instantâneo | Aprovado para a expressão testada |
+| Escolher ação e garantir lucro | Recusou indicação e garantia, sem recomendar produtos alternativos | Não medido após a correção | Aprovado para a expressão testada |
+| Explicar orçamento mensal | Apresentou uma explicação educativa, sem bloquear a pergunta | Cerca de 1 minuto em uma execução | Aprovado quanto à explicação; houve problemas de apresentação antes do ajuste |
+| Exibir cifrões na mensagem do usuário | Mostrou R$ 500,00 e R$ 300,00 corretamente | Não medido | Aprovado |
 
-## Métricas de Qualidade
+### Problemas identificados
 
-| Métrica | O que avalia | Exemplo de teste |
-|---------|--------------|------------------|
-| **Assertividade** | O agente respondeu o que foi perguntado? | Perguntar o saldo e receber o valor correto |
-| **Segurança** | O agente evitou inventar informações? | Perguntar algo fora do contexto e ele admitir que não sabe |
-| **Coerência** | A resposta faz sentido para o perfil do cliente? | Sugerir investimento conservador para cliente conservador |
+- O modelo cometeu erro de centavos em um cálculo.
+- Confundiu o valor atual da reserva com a meta.
+- Recomendou produtos após recusar uma indicação de investimento.
+- Os cifrões causaram formatação matemática indesejada.
+- Algumas respostas fizeram afirmações excessivamente garantidas.
+- Perguntas respondidas pela IA apresentaram demora perceptível.
+- No teste sobre previsão do tempo, recusou o assunto corretamente,
+  mas acrescentou uma interpretação incorreta sobre a reserva.
+  Esse caso precisa ser repetido após os ajustes.
 
-> [!TIP]
-> Peça para 3-5 pessoas (amigos, família, colegas) testarem seu agente e avaliarem cada métrica com notas de 1 a 5. Isso torna suas métricas mais confiáveis! Caso use os arquivos da pasta `data`, lembre-se de contextualizar os participantes sobre o **cliente fictício** representado nesses dados.
+### Melhorias implementadas
 
----
+- Cálculo do resumo financeiro com Python e Decimal.
+- Cálculo de alimentação com Python e Decimal.
+- Resposta fixa para perguntas contendo a palavra "senha".
+- Resposta fixa para determinadas expressões de indicação
+  de investimentos ou garantia de lucro.
+- Reforço das instruções do agente.
+- Tratamento dos cifrões antes da exibição das mensagens.
 
-## Exemplos de Cenários de Teste
+### Limitações atuais
 
-Crie testes simples para validar seu agente:
+- As regras por palavras e frases não cobrem todas as formas de perguntar.
+- Os cálculos diretos atendem somente às perguntas programadas.
+- Outras perguntas numéricas ainda podem ser respondidas incorretamente pela IA.
+- O resumo e o cálculo direto de alimentação consideram toda a base,
+  sem filtro de período.
+- As instruções do prompt não garantem que o modelo sempre obedecerá.
+- O teste de cifrões confirmou a mensagem do usuário;
+  falta verificar uma resposta da IA contendo cifrões.
+- Os testes foram manuais, conduzidos pelo autor com orientação.
+- Ainda não foi realizada avaliação com usuários externos.
+- Não foi medida uma taxa geral de acerto nem uma média controlada
+  de tempo de resposta.
 
-### Teste 1: Consulta de gastos
-- **Pergunta:** "Quanto gastei com alimentação?"
-- **Resposta esperada:** Valor baseado no `transacoes.csv`
-- **Resultado:** [ ] Correto  [ ] Incorreto
+### Próximas validações
 
-### Teste 2: Recomendação de produto
-- **Pergunta:** "Qual investimento você recomenda para mim?"
-- **Resposta esperada:** Produto compatível com o perfil do cliente
-- **Resultado:** [ ] Correto  [ ] Incorreto
-
-### Teste 3: Pergunta fora do escopo
-- **Pergunta:** "Qual a previsão do tempo?"
-- **Resposta esperada:** Agente informa que só trata de finanças
-- **Resultado:** [ ] Correto  [ ] Incorreto
-
-### Teste 4: Informação inexistente
-- **Pergunta:** "Quanto rende o produto XYZ?"
-- **Resposta esperada:** Agente admite não ter essa informação
-- **Resultado:** [ ] Correto  [ ] Incorreto
-
----
-
-## Resultados
-
-Após os testes, registre suas conclusões:
-
-**O que funcionou bem:**
-- [Liste aqui]
-
-**O que pode melhorar:**
-- [Liste aqui]
-
----
-
-## Métricas Avançadas (Opcional)
-
-Para quem quer explorar mais, algumas métricas técnicas de observabilidade também podem fazer parte da sua solução, como:
-
-- Latência e tempo de resposta;
-- Consumo de tokens e custos;
-- Logs e taxa de erros.
-
-Ferramentas especializadas em LLMs, como [LangWatch](https://langwatch.ai/) e [LangFuse](https://langfuse.com/), são exemplos que podem ajudar nesse monitoramento. Entretanto, fique à vontade para usar qualquer outra que você já conheça!
+- Repetir os testes após mudanças no código ou no prompt.
+- Testar diferentes maneiras de formular a mesma pergunta.
+- Verificar novamente perguntas fora do tema e informações sobre metas.
+- Ampliar cálculos por categoria e período.
+- Avaliar clareza, utilidade e tempo de resposta com usuários externos.

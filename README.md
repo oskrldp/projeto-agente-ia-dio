@@ -1,149 +1,179 @@
-# 🤖 Agente Financeiro Inteligente com IA Generativa
+# 💰 Poco — Assistente de Educação e Organização Financeira
 
-## Contexto
+Poco é um protótipo educacional que ajuda jovens e adultos de 18 a 40 anos
+a compreender seus gastos, com linguagem simples, objetiva e sem julgamentos.
 
-Os assistentes virtuais no setor financeiro estão evoluindo de simples chatbots reativos para **agentes inteligentes e proativos**. Neste desafio, você vai idealizar e prototipar um agente financeiro que utiliza IA Generativa para:
+O projeto combina cálculos em Python com explicações geradas por uma
+inteligência artificial local, executada pelo Ollama.
 
-- **Antecipar necessidades** ao invés de apenas responder perguntas
-- **Personalizar** sugestões com base no contexto de cada cliente
-- **Cocriar soluções** financeiras de forma consultiva
-- **Garantir segurança** e confiabilidade nas respostas (anti-alucinação)
+Desenvolvido a partir do desafio de agente financeiro da DIO.
 
-> [!TIP]
-> Na pasta [`examples/`](./examples/) você encontra referências de implementação para cada etapa deste desafio.
+## O que o Poco faz
 
----
+- Apresenta um resumo das entradas e saídas registradas.
+- Calcula o total de despesas com alimentação.
+- Explica conceitos de organização financeira, como orçamento mensal.
+- Responde a perguntas com base nos dados fictícios fornecidos.
+- Apresenta avisos programados para perguntas sobre senhas e determinadas
+  solicitações de indicação de investimentos.
 
-## O Que Você Deve Entregar
+O protótipo não possui integração bancária e não realiza pagamentos
+ou transferências. Não substitui orientação profissional.
 
-### 1. Documentação do Agente
+## Como funciona
 
-Defina **o que** seu agente faz e **como** ele funciona:
+Existem dois caminhos para responder:
 
-- **Caso de Uso:** Qual problema financeiro ele resolve? (ex: consultoria de investimentos, planejamento de metas, alertas de gastos)
-- **Persona e Tom de Voz:** Como o agente se comporta e se comunica?
-- **Arquitetura:** Fluxo de dados e integração com a base de conhecimento
-- **Segurança:** Como evitar alucinações e garantir respostas confiáveis?
+1. **Python:** algumas perguntas reconhecidas acionam cálculos com Decimal
+   ou avisos prontos, sem consultar o modelo.
+2. **IA local:** as demais perguntas são enviadas ao Ollama com as instruções
+   do Poco e o contexto dos dados fictícios.
 
-📄 **Template:** [`docs/01-documentacao-agente.md`](./docs/01-documentacao-agente.md)
+O histórico aparece na interface, mas a implementação atual envia ao modelo
+apenas a pergunta atual e o contexto, não toda a conversa anterior.
 
----
+## Tecnologias
 
-### 2. Base de Conhecimento
+- Python
+- Streamlit — interface de chat
+- pandas — leitura e organização das tabelas
+- requests — comunicação com o Ollama
+- Decimal — cálculos decimais
+- Ollama com o modelo `qwen3:4b`
 
-Utilize os **dados mockados** disponíveis na pasta [`data/`](./data/) para alimentar seu agente:
+## Dados utilizados
 
-| Arquivo | Formato | Descrição |
-|---------|---------|-----------|
-| `transacoes.csv` | CSV | Histórico de transações do cliente |
-| `historico_atendimento.csv` | CSV | Histórico de atendimentos anteriores |
-| `perfil_investidor.json` | JSON | Perfil e preferências do cliente |
-| `produtos_financeiros.json` | JSON | Produtos e serviços disponíveis |
+Todos os dados do exemplo são fictícios.
 
-Você pode adaptar ou expandir esses dados conforme seu caso de uso.
+| Arquivo | Conteúdo |
+|---|---|
+| `data/transacoes.csv` | Entradas e saídas do cliente fictício |
+| `data/perfil_investidor.json` | Perfil, objetivos e informações financeiras |
+| `data/historico_atendimento.csv` | Atendimentos anteriores simulados |
+| `data/produtos_financeiros.json` | Informações de exemplo sobre produtos financeiros |
 
-📄 **Template:** [`docs/02-base-conhecimento.md`](./docs/02-base-conhecimento.md)
+As transações fornecidas abrangem outubro de 2025.
+Informações sobre produtos são material de exemplo, não cotações atualizadas.
 
----
+## Como executar no Windows
 
-### 3. Prompts do Agente
+### 1. Preparação
 
-Documente os prompts que definem o comportamento do seu agente:
+Instale Python e Ollama. Baixe este repositório e abra a pasta do projeto
+no VS Code.
 
-- **System Prompt:** Instruções gerais de comportamento e restrições
-- **Exemplos de Interação:** Cenários de uso com entrada e saída esperada
-- **Tratamento de Edge Cases:** Como o agente lida com situações limite
+No terminal, execute:
 
-📄 **Template:** [`docs/03-prompts.md`](./docs/03-prompts.md)
-
----
-
-### 4. Aplicação Funcional
-
-Desenvolva um **protótipo funcional** do seu agente:
-
-- Chatbot interativo (sugestão: Streamlit, Gradio ou similar)
-- Integração com LLM (via API ou modelo local)
-- Conexão com a base de conhecimento
-
-📁 **Pasta:** [`src/`](./src/)
-
----
-
-### 5. Avaliação e Métricas
-
-Descreva como você avalia a qualidade do seu agente:
-
-**Métricas Sugeridas:**
-- Precisão/assertividade das respostas
-- Taxa de respostas seguras (sem alucinações)
-- Coerência com o perfil do cliente
-
-📄 **Template:** [`docs/04-metricas.md`](./docs/04-metricas.md)
-
----
-
-### 6. Pitch
-
-Grave um **pitch de 3 minutos** (estilo elevador) apresentando:
-
-- Qual problema seu agente resolve?
-- Como ele funciona na prática?
-- Por que essa solução é inovadora?
-
-📄 **Template:** [`docs/05-pitch.md`](./docs/05-pitch.md)
-
----
-
-## Ferramentas Sugeridas
-
-Todas as ferramentas abaixo possuem versões gratuitas:
-
-| Categoria | Ferramentas |
-|-----------|-------------|
-| **LLMs** | [ChatGPT](https://chat.openai.com/), [Copilot](https://copilot.microsoft.com/), [Gemini](https://gemini.google.com/), [Claude](https://claude.ai/), [Ollama](https://ollama.ai/) |
-| **Desenvolvimento** | [Streamlit](https://streamlit.io/), [Gradio](https://www.gradio.app/), [Google Colab](https://colab.research.google.com/) |
-| **Orquestração** | [LangChain](https://www.langchain.com/), [LangFlow](https://www.langflow.org/), [CrewAI](https://www.crewai.com/) |
-| **Diagramas** | [Mermaid](https://mermaid.js.org/), [Draw.io](https://app.diagrams.net/), [Excalidraw](https://excalidraw.com/) |
-
----
-
-## Estrutura do Repositório
-
-```
-📁 lab-agente-financeiro/
-│
-├── 📄 README.md
-│
-├── 📁 data/                          # Dados mockados para o agente
-│   ├── historico_atendimento.csv     # Histórico de atendimentos (CSV)
-│   ├── perfil_investidor.json        # Perfil do cliente (JSON)
-│   ├── produtos_financeiros.json     # Produtos disponíveis (JSON)
-│   └── transacoes.csv                # Histórico de transações (CSV)
-│
-├── 📁 docs/                          # Documentação do projeto
-│   ├── 01-documentacao-agente.md     # Caso de uso e arquitetura
-│   ├── 02-base-conhecimento.md       # Estratégia de dados
-│   ├── 03-prompts.md                 # Engenharia de prompts
-│   ├── 04-metricas.md                # Avaliação e métricas
-│   └── 05-pitch.md                   # Roteiro do pitch
-│
-├── 📁 src/                           # Código da aplicação
-│   └── app.py                        # (exemplo de estrutura)
-│
-├── 📁 assets/                        # Imagens e diagramas
-│   └── ...
-│
-└── 📁 examples/                      # Referências e exemplos
-    └── README.md
+```powershell
+ollama pull qwen3:4b
 ```
 
----
+Se o modelo já estiver instalado, não é necessário baixá-lo novamente.
+Mantenha o Ollama em execução.
 
-## Dicas Finais
+### 2. Ambiente Python
 
-1. **Comece pelo prompt:** Um bom system prompt é a base de um agente eficaz
-2. **Use os dados mockados:** Eles garantem consistência e evitam problemas com dados sensíveis
-3. **Foque na segurança:** No setor financeiro, evitar alucinações é crítico
-4. **Teste cenários reais:** Simule perguntas que um cliente faria de verdade
-5. **Seja direto no pitch:** 3 minutos passam rápido, vá ao ponto
+Na raiz do projeto, crie o ambiente virtual:
+
+```powershell
+py -m venv .venv
+```
+
+Instale as dependências:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r src/requirements.txt
+```
+
+### 3. Iniciar a aplicação
+
+```powershell
+.\.venv\Scripts\python.exe -m streamlit run src/app.py
+```
+
+Abra o endereço `Local URL` indicado no terminal.
+Mantenha o terminal aberto durante o uso.
+
+A aplicação espera o Ollama em `http://localhost:11434/api/generate`.
+O modelo configurado em `src/app.py` deve ser `qwen3:4b`.
+
+Para encerrar a aplicação, pressione Ctrl + C no terminal.
+
+## Perguntas para experimentar
+
+### Consultas calculadas pelo Python
+
+- Mostrar resumo financeiro
+- Quanto gastei com alimentação?
+
+Essas consultas consideram toda a base disponível, sem filtro de mês.
+
+### Perguntas educativas e de validação
+
+- O que é um orçamento mensal? Explique de forma simples.
+- Quanto gastei com alimentação em dezembro de 2025?
+- Posso te passar minha senha do banco para você consultar meu saldo?
+- Qual ação devo comprar hoje? Escolha uma para mim e garanta que vou lucrar.
+
+Não forneça senhas ou dados pessoais reais durante os testes.
+
+## Resultados observados
+
+Com a base fornecida:
+
+| Consulta | Resultado |
+|---|---|
+| Total de entradas | 5.000,00 reais |
+| Total de saídas | 2.488,90 reais |
+| Diferença entre entradas e saídas | 2.511,10 reais |
+| Alimentação | 570,00 reais em 2 lançamentos |
+
+A diferença entre entradas e saídas não representa saldo bancário real:
+não considera saldo inicial nem movimentações fora da base.
+
+As consultas programadas responderam sem demora perceptível nos testes.
+Respostas da IA levaram aproximadamente 23 a 60 segundos em execuções recentes.
+
+Esses tempos são estimativas manuais, não um benchmark controlado.
+O computador utilizado tinha uma AMD Radeon RX 6600 com 8 GB de memória
+dedicada e aproximadamente 16 GB de RAM.
+
+## Limitações
+
+- O modelo pode cometer erros e desobedecer às instruções do prompt.
+- As proteções por palavras e frases não abrangem todas as formulações.
+- Perguntas numéricas fora das consultas programadas ainda podem ser
+  calculadas incorretamente pela IA.
+- Os cálculos diretos ainda não oferecem filtros por mês.
+- A IA apresentou interpretações incorretas sobre a reserva financeira.
+- O tempo de resposta depende do computador e da pergunta.
+- Ainda não houve avaliação com usuários externos.
+- O protótipo não deve ser tratado como um sistema financeiro de produção.
+
+## Melhorias futuras
+
+- Ampliar cálculos para outras categorias.
+- Implementar filtros por período.
+- Melhorar a interpretação de metas e valores disponíveis.
+- Ampliar os testes de segurança e de diferentes formas de perguntar.
+- Reduzir a latência.
+- Avaliar clareza e utilidade com outros usuários.
+
+## Documentação
+
+A pasta `docs` contém:
+
+- `01-documentacao-agente.md` — objetivo, personalidade e arquitetura.
+- `02-base-conhecimento.md` — organização dos dados.
+- `03-prompts.md` — instruções do agente.
+- `04-metricas.md` — testes, resultados e limitações.
+- `05-pitch.md` — roteiro e link da apresentação.
+
+## Demonstração em vídeo
+
+[\[Assistir ao pitch do Poco\] ](https://drive.google.com/file/d/1w5QatXCpfgJMb9-GuZq0Dk1gL1O0g_qG/view?usp=sharing)
+
+## Créditos
+
+Projeto educacional desenvolvido a partir da estrutura e dos dados
+de exemplo disponibilizados pela DIO.

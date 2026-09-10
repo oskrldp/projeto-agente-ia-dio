@@ -1,55 +1,116 @@
-# Base de Conhecimento
+# Base de Conhecimento — Poco
 
-## Dados Utilizados
+## 1. Visão geral
 
-Descreva se usou os arquivos da pasta `data`, por exemplo:
+A base de conhecimento do Poco é composta por dados financeiros fictícios. Esses dados são usados para personalizar as respostas, analisar gastos e explicar conceitos de organização financeira.
 
-| Arquivo | Formato | Utilização no Agente |
-|---------|---------|---------------------|
-| `historico_atendimento.csv` | CSV | Contextualizar interações anteriores |
-| `perfil_investidor.json` | JSON | Personalizar recomendações |
-| `produtos_financeiros.json` | JSON | Sugerir produtos adequados ao perfil |
-| `transacoes.csv` | CSV | Analisar padrão de gastos do cliente |
+Nenhum dado bancário real, senha, cartão ou informação pessoal sensível é utilizado neste projeto.
 
-> [!TIP]
-> **Quer um dataset mais robusto?** Você pode utilizar datasets públicos do [Hugging Face](https://huggingface.co/datasets) relacionados a finanças, desde que sejam adequados ao contexto do desafio.
+## 2. Arquivos utilizados
 
----
+| Arquivo | Conteúdo | Utilidade para o Poco |
+|---|---|---|
+| `data/perfil_investidor.json` | Perfil, renda, objetivos, patrimônio, reserva e metas do cliente fictício | Personalizar explicações e entender o contexto financeiro |
+| `data/transacoes.csv` | Entradas e saídas financeiras, com data, descrição, categoria e valor | Analisar gastos, categorias e orçamento |
+| `data/historico_atendimento.csv` | Atendimentos fictícios anteriores, com temas e resumos | Considerar assuntos já tratados anteriormente |
+| `data/produtos_financeiros.json` | Informações gerais sobre produtos financeiros | Explicar conceitos e características de produtos sem recomendar investimentos |
 
-## Adaptações nos Dados
+## 3. Dados do perfil
 
-> Você modificou ou expandiu os dados mockados? Descreva aqui.
+O arquivo `perfil_investidor.json` apresenta o perfil fictício do cliente.
 
-[Sua descrição aqui]
+Ele contém informações como:
 
----
+- Nome.
+- Idade.
+- Profissão.
+- Renda mensal.
+- Perfil de investidor.
+- Objetivo principal.
+- Patrimônio total.
+- Reserva de emergência.
+- Aceitação de risco.
+- Metas financeiras.
 
-## Estratégia de Integração
+Essas informações ajudam o Poco a adaptar a linguagem e os exemplos ao contexto do cliente.
 
-### Como os dados são carregados?
-> Descreva como seu agente acessa a base de conhecimento.
+## 4. Dados de transações
 
-[ex: Os JSON/CSV são carregados no início da sessão e incluídos no contexto do prompt]
+O arquivo `transacoes.csv` registra movimentações financeiras fictícias.
 
-### Como os dados são usados no prompt?
-> Os dados vão no system prompt? São consultados dinamicamente?
+Cada transação possui:
 
-[Sua descrição aqui]
+- Data.
+- Descrição.
+- Categoria.
+- Valor.
+- Tipo: entrada ou saída.
 
----
+O Poco utiliza essas informações para:
 
-## Exemplo de Contexto Montado
+- Somar gastos.
+- Identificar categorias com maior despesa.
+- Comparar entradas e saídas.
+- Criar resumos financeiros.
+- Apoiar o planejamento de orçamento.
+- Acompanhar metas de economia.
 
-> Mostre um exemplo de como os dados são formatados para o agente.
+Exemplo de teste esperado: os gastos com alimentação somam R$ 570,00, considerando supermercado e restaurante.
 
-```
-Dados do Cliente:
-- Nome: João Silva
-- Perfil: Moderado
-- Saldo disponível: R$ 5.000
+## 5. Histórico de atendimento
 
-Últimas transações:
-- 01/11: Supermercado - R$ 450
-- 03/11: Streaming - R$ 55
-...
-```
+O arquivo `historico_atendimento.csv` registra conversas fictícias anteriores.
+
+Ele possui:
+
+- Data do atendimento.
+- Canal utilizado.
+- Tema.
+- Resumo.
+- Status de resolução.
+
+Esses dados permitem que o Poco considere quais assuntos já foram explicados e mantenha uma conversa mais coerente.
+
+## 6. Produtos financeiros
+
+O arquivo `produtos_financeiros.json` contém informações educativas sobre produtos financeiros.
+
+O Poco pode explicar características como:
+
+- Categoria.
+- Risco.
+- Liquidez.
+- Valor mínimo.
+- Forma de rentabilidade.
+- Indicação geral.
+
+O Poco não recomenda a compra de produtos específicos. Ele apenas explica conceitos e fatores que o usuário deve compreender antes de tomar uma decisão.
+
+## 7. Privacidade e segurança
+
+A base foi criada apenas para fins educacionais e utiliza dados fictícios.
+
+O Poco deve:
+
+- Usar os dados fornecidos apenas para responder perguntas relacionadas ao projeto.
+- Não solicitar dados bancários reais.
+- Não solicitar senhas, códigos ou documentos.
+- Não inventar informações que não estejam disponíveis.
+- Informar quando os dados forem insuficientes.
+- Não compartilhar informações de um cliente com outro.
+- Não utilizar os dados para realizar operações financeiras.
+
+## 8. Estratégia de uso no aplicativo
+
+O aplicativo em Python carregará os arquivos CSV e JSON.
+
+Antes de responder uma pergunta, o sistema enviará ao modelo:
+
+1. As regras de comportamento do Poco.
+2. O perfil fictício do cliente.
+3. As transações disponíveis.
+4. O histórico de atendimento.
+5. As informações educativas sobre produtos financeiros.
+6. A pergunta feita pelo usuário.
+
+Dessa forma, o modelo terá contexto para responder de forma personalizada, educativa e segura.

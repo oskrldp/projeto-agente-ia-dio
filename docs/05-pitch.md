@@ -1,44 +1,73 @@
-# Pitch (3 minutos)
+# Pitch do Poco — Assistente Financeiro
 
-> [!TIP]
-> Você pode usar alguns slides pra apoiar no seu Pitch e mostrar sua solução na prática.
- 
-## Roteiro Sugerido
+## 1. O problema — 30 segundos
 
-### 1. O Problema (30 seg)
-> Qual dor do cliente você resolve?
+Muitas pessoas têm dificuldade para entender para onde o dinheiro
+está indo. Pensando em jovens e adultos de 18 a 40 anos que estão
+começando a organizar suas finanças, desenvolvi o Poco:
+um assistente que explica gastos de maneira simples,
+objetiva e sem julgamentos.
 
-[Sua descrição aqui]
+## 2. A solução — 1 minuto
 
-### 2. A Solução (1 min)
-> Como seu agente resolve esse problema?
+O Poco combina Python, uma interface em Streamlit e um modelo
+de inteligência artificial executado localmente pelo Ollama.
 
-[Sua descrição aqui]
+Neste protótipo, utilizo dados fictícios. O agente não acessa
+contas bancárias nem realiza movimentações financeiras.
 
-### 3. Demonstração (1 min)
-> Mostre o agente funcionando (pode ser gravação de tela)
+Durante os testes, percebi que a inteligência artificial podia
+errar cálculos. Por isso, passei o resumo financeiro e o total
+de alimentação para funções em Python, usando Decimal.
 
-[Descreva o que será mostrado]
+A IA continua responsável por explicações educativas.
+Também acrescentei respostas programadas para algumas perguntas
+sobre senhas e pedidos de indicação de investimentos.
 
-### 4. Diferencial e Impacto (30 seg)
-> Por que essa solução é inovadora e qual é o impacto dela na sociedade?
+## 3. Demonstração — 1 minuto
 
-[Sua descrição aqui]
+[Mostrar a pergunta “Mostrar resumo financeiro”.]
 
----
+Aqui, o Poco calcula 5.000 reais de entradas e 2.488 reais
+e 90 centavos de saídas. A diferença é de 2.511 reais
+e 10 centavos. Ele esclarece que isso não é o saldo bancário real.
 
-## Checklist do Pitch
+[Mostrar “Quanto gastei com alimentação?”.]
+
+Nesta consulta, ele encontra 570 reais em dois lançamentos.
+
+[Mostrar a pergunta sobre compartilhar senha, sem digitar senha real.]
+
+Aqui, ele orienta a não compartilhar senhas e explica que não
+acessa contas bancárias.
+
+[Mostrar uma resposta educativa já carregada.]
+
+Esta explicação sobre orçamento foi gerada anteriormente pela IA.
+As respostas educativas demoram mais que os cálculos programados.
+
+## 4. Diferencial e impacto — 30 segundos
+
+O diferencial do Poco é combinar explicações em linguagem simples
+com cálculos programados e limites explícitos.
+
+O objetivo é apoiar a educação financeira, sem substituir
+orientação profissional. Nos testes recentes, a IA levou cerca
+de 23 a 60 segundos e ainda apresentou erros.
+
+Os próximos passos são ampliar os filtros por período,
+melhorar o desempenho e avaliar o projeto com outros usuários.
+
+## Checklist do pitch
 
 - [ ] Duração máxima de 3 minutos
 - [ ] Problema claramente definido
 - [ ] Solução demonstrada na prática
-- [ ] Diferencial explicado
-- [ ] Áudio e vídeo com boa qualidade
+- [ ] Diferencial e limitações explicados
+- [ ] Áudio compreensível e tela legível
+- [ ] Nenhum dado pessoal ou senha exposto
+- [ ] Link acessível ao avaliador
 
----
+## Link do vídeo
 
-## Link do Vídeo
-
-> Cole aqui o link do seu pitch (YouTube, Loom, Google Drive, etc.)
-
-[Link do vídeo]
+https://drive.google.com/file/d/1w5QatXCpfgJMb9-GuZq0Dk1gL1O0g_qG/view?usp=sharing
