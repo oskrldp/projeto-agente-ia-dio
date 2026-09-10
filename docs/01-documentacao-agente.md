@@ -47,30 +47,42 @@ O Poco conversa de forma:
 - Com exemplos do cotidiano.
 - Calma e respeitosa, principalmente ao falar sobre dívidas ou dificuldades.
 
-## 6. O que o Poco pode fazer
+## 6. Funcionalidades e limites da versão atual
 
-O Poco pode:
+### Funcionalidades implementadas
 
-- Ler transações fornecidas no projeto.
-- Separar entradas e saídas.
-- Organizar gastos por categoria.
-- Somar gastos por dia, semana, mês ou categoria.
-- Mostrar onde o usuário gastou mais.
-- Identificar gastos repetidos ou recorrentes.
-- Comparar gastos entre períodos.
-- Mostrar a porcentagem da renda usada em cada categoria.
-- Criar resumos financeiros.
-- Ajudar a montar um orçamento mensal.
-- Separar despesas essenciais e não essenciais.
-- Acompanhar metas de economia.
-- Calcular quanto falta para alcançar uma meta.
-- Explicar conceitos como orçamento, juros, inflação e reserva de emergência.
-- Explicar termos como CDI, Selic, CDB, risco e liquidez.
-- Apresentar informações de produtos financeiros de forma educativa.
-- Sugerir hábitos gerais de organização financeira.
-- Fazer perguntas para ajudar o usuário a refletir sobre seus gastos.
-- Adaptar a linguagem ao nível de conhecimento do usuário.
-- Admitir quando não possui dados suficientes.
+- Ler os arquivos de dados fictícios do projeto.
+- Calcular entradas, saídas e a diferença entre elas com Python e Decimal,
+  para a pergunta "Mostrar resumo financeiro".
+- Calcular o total de alimentação para a pergunta
+  "Quanto gastei com alimentação?".
+- Informar que esses cálculos consideram toda a base, sem filtro de mês.
+- Responder perguntas educativas por meio do modelo local qwen3:4b.
+- Apresentar uma resposta programada para perguntas contendo "senha".
+- Recusar determinadas expressões de indicação de investimentos
+  ou garantia de lucro por meio de respostas programadas.
+- Exibir as mensagens da conversa e tratar cifrões na apresentação.
+
+### Limitações
+
+- As regras programadas reconhecem somente determinadas palavras e frases.
+- Perguntas fora dessas regras são enviadas à IA, que pode errar.
+- Não há validação automática geral da exatidão das respostas da IA.
+- O histórico é exibido na interface, mas não é enviado integralmente
+  ao modelo a cada pergunta.
+- As metas existem no arquivo de perfil, mas não são incluídas
+  no contexto enviado ao modelo nesta versão.
+- Os limites de comportamento são objetivos do sistema,
+  não garantias de que toda resposta será correta.
+
+### Melhorias planejadas
+
+- Filtros por dia, mês e outros períodos.
+- Cálculos programados para outras categorias.
+- Comparação entre períodos e identificação de gastos recorrentes.
+- Cálculo de percentuais por categoria.
+- Acompanhamento de metas e cálculo do valor restante.
+- Validações adicionais das respostas geradas pela IA.
 
 ## 7. O que o Poco não pode fazer
 
@@ -99,10 +111,28 @@ O Poco não pode:
 ## 8. Arquitetura simplificada
 
 ```mermaid
-flowchart LR
+flowchart TD
     U[Usuário] --> I[Interface Streamlit]
-    I --> P[Prompt e regras do Poco]
-    D[Dados fictícios: transações, perfil e metas] --> P
-    P --> M[Modelo local via Ollama]
-    M --> V[Validação das regras]
-    V --> I
+    I --> R{Pergunta reconhecida pelas regras?}
+
+    R -->|Senha ou pedido de investimento previsto| A[Aviso programado]
+    R -->|Resumo ou alimentação previstos| C[Cálculo em Python com Decimal]
+    D[Transações fictícias] --> C
+
+    R -->|Demais perguntas| P[Instruções + contexto + pergunta atual]
+    F[Campos selecionados do perfil, transações, atendimentos e produtos] --> P
+    P --> M[Modelo qwen3:4b via Ollama]
+    M --> T[Resposta ou mensagem de erro]
+
+    A --> E[Preparação do texto para exibição]
+    C --> E
+    T --> E
+    E --> I
+```
+
+As regras programadas são verificadas antes de consultar a IA.
+Não existe uma etapa geral que valide automaticamente o conteúdo
+de todas as respostas após a geração.
+
+O tratamento dos cifrões corrige a apresentação do texto,
+mas não verifica cálculos ou afirmações financeiras.
