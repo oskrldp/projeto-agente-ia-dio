@@ -1,31 +1,10 @@
-# Código da Aplicação
+# Código da aplicação Poco
 
-Esta pasta contém o código do seu agente financeiro.
+- `app.py`: interface, leitura dos dados, cálculos programados
+  e comunicação com o Ollama.
+- `requirements.txt`: dependências Python — streamlit, pandas e requests.
 
-## Estrutura Sugerida
+Modelo utilizado: qwen3:4b.
 
-```
-src/
-├── app.py              # Aplicação principal (Streamlit/Gradio)
-├── agente.py           # Lógica do agente
-├── config.py           # Configurações (API keys, etc.)
-└── requirements.txt    # Dependências
-```
-
-## Exemplo de requirements.txt
-
-```
-streamlit
-openai
-python-dotenv
-```
-
-## Como Rodar
-
-```bash
-# Instalar dependências
-pip install -r requirements.txt
-
-# Rodar a aplicação
-streamlit run app.py
-```
+As instruções completas de instalação e execução estão no
+[README principal](../README.md).
