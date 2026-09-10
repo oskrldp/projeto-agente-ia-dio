@@ -32,7 +32,19 @@ Ele contém informações como:
 - Aceitação de risco.
 - Metas financeiras.
 
-Essas informações ajudam o Poco a adaptar a linguagem e os exemplos ao contexto do cliente.
+Nem todos esses campos são enviados ao modelo na versão atual.
+
+O contexto inclui nome, idade, perfil de investidor, objetivo principal,
+patrimônio total e reserva de emergência atual.
+
+Profissão, renda mensal, aceitação de risco e a lista de metas
+existem no JSON, mas não são incluídas diretamente no contexto.
+
+A renda pode aparecer também nas transações, como um lançamento
+de salário. Isso não significa que o campo renda_mensal do perfil
+esteja sendo enviado.
+
+A versão atual não implementa acompanhamento de metas.
 
 ## 4. Dados de transações
 
@@ -53,7 +65,8 @@ O Poco utiliza essas informações para:
 - Comparar entradas e saídas.
 - Criar resumos financeiros.
 - Apoiar o planejamento de orçamento.
-- Acompanhar metas de economia.
+- Fornecer dados para explicações educativas; o acompanhamento
+de metas é uma melhoria planejada.
 
 Exemplo de teste esperado: os gastos com alimentação somam R$ 570,00, considerando supermercado e restaurante.
 
@@ -102,15 +115,45 @@ O Poco deve:
 
 ## 8. Estratégia de uso no aplicativo
 
-O aplicativo em Python carregará os arquivos CSV e JSON.
+O aplicativo carrega os arquivos CSV e JSON, mas o conteúdo enviado
+à IA depende do contexto montado no código.
 
-Antes de responder uma pergunta, o sistema enviará ao modelo:
+### Perguntas respondidas sem consultar a IA
 
-1. As regras de comportamento do Poco.
-2. O perfil fictício do cliente.
-3. As transações disponíveis.
-4. O histórico de atendimento.
-5. As informações educativas sobre produtos financeiros.
-6. A pergunta feita pelo usuário.
+- Resumo financeiro: cálculo das entradas, saídas e diferença em Python.
+- Alimentação: cálculo das despesas dessa categoria em Python.
+- Senhas: aviso programado quando a palavra é identificada.
+- Investimentos: recusa programada para determinadas expressões.
 
-Dessa forma, o modelo terá contexto para responder de forma personalizada, educativa e segura.
+Os cálculos diretos utilizam todas as transações disponíveis,
+sem filtro de mês.
+
+### Perguntas encaminhadas ao modelo
+
+Para as demais perguntas, o aplicativo envia:
+
+1. As instruções de comportamento do Poco.
+2. Campos selecionados do perfil: nome, idade, perfil de investidor,
+   objetivo principal, patrimônio total e reserva atual.
+3. A tabela de transações.
+4. O histórico fictício de atendimentos.
+5. As informações de exemplo sobre produtos financeiros.
+6. A pergunta atual do usuário.
+
+A lista de metas do JSON não é enviada nesta versão.
+Portanto, o agente não deve afirmar que uma meta foi atingida
+sem informações suficientes.
+
+O histórico fictício de atendimentos é diferente do histórico
+do chat: as mensagens anteriores da sessão aparecem na interface,
+mas não são enviadas integralmente ao modelo.
+
+O contexto auxilia a geração das respostas, mas não garante
+sua exatidão. A IA ainda pode interpretar dados incorretamente.
+
+### Evolução planejada
+
+- Incluir metas de forma explícita no contexto.
+- Calcular o progresso das metas em Python.
+- Implementar filtros de categoria e período.
+- Selecionar somente os dados necessários para cada pergunta.
